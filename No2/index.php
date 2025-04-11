@@ -91,40 +91,32 @@ setcookie('visit_count', isset($_COOKIE['visit_count']) ? $_COOKIE['visit_count'
                 <div class="modal-form">
                     <h1>Create your account</h1>
                     <div class="modal-form-input">
-                        <form>
-                            <input type="text" class="form-control" placeholder="Name">
-                            <input type="text" class="form-control" placeholder="Email"><br>
-                            <label>Date of birth</label>
-                            <p>This will not be shown publicly. Confirm your own age, even if this account is for a
-                                business, a pet, or something else.</p>
+                        <form method="post" action="register.php">
+                            <input type="text" class="form-control" placeholder="Username" name="username" required>
+                            <input type="password" class="form-control" placeholder="Password" name="password"
+                                required><br>
+                            <button type="submit" class="btn-input" id="create">Create</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-                            <div class="dob-input">
-                                <select id="day" name="day">
-                                    <option value="" disabled selected>Day</option>
-                                </select>
 
-                                <select id="month" name="month">
-                                    <option value="" disabled selected>Month</option>
-                                    <option value="1">January</option>
-                                    <option value="2">February</option>
-                                    <option value="3">March</option>
-                                    <option value="4">April</option>
-                                    <option value="5">May</option>
-                                    <option value="6">June</option>
-                                    <option value="7">July</option>
-                                    <option value="8">August</option>
-                                    <option value="9">September</option>
-                                    <option value="10">October</option>
-                                    <option value="11">November</option>
-                                    <option value="12">December</option>
-                                </select>
+        <div id="modal-sign-in">
+            <div class="modal-in">
+                <div class="modal-top-in">
+                    <img src="assets/close-svgrepo-com.svg" alt="close" id="close-in">
+                    <img src="assets/icon-x.svg" alt="logo">
+                </div>
 
-                                <select id="year" name="year">
-                                    <option value="" disabled selected>Year</option>
-                                </select>
-                            </div>
-
-                            <button class="btn-input">Next</button>
+                <div class="modal-form-in">
+                    <h1>Login your account</h1>
+                    <div class="modal-form-input-in">
+                        <form method="post" action="login.php">
+                            <input type="text" class="form-control-in" name="username" placeholder="Username">
+                            <input type="password" class="form-control-in" name="password" placeholder="Password"><br>
+                            <button class="btn-input-in" id="next-in" type="submit">Login</button>
                         </form>
                     </div>
                 </div>
@@ -133,27 +125,6 @@ setcookie('visit_count', isset($_COOKIE['visit_count']) ? $_COOKIE['visit_count'
     </div>
 
     <script>
-        // Ambil elemen dropdown
-        const daySelect = document.getElementById("day");
-        const yearSelect = document.getElementById("year");
-
-        // Isi dropdown Hari (1-31)
-        for (let i = 1; i <= 31; i++) {
-            let option = document.createElement("option");
-            option.value = i;
-            option.textContent = i;
-            daySelect.appendChild(option);
-        }
-
-        // Isi dropdown Tahun (1900 - Tahun Sekarang)
-        const currentYear = new Date().getFullYear();
-        for (let i = currentYear; i >= 1900; i--) {
-            let option = document.createElement("option");
-            option.value = i;
-            option.textContent = i;
-            yearSelect.appendChild(option);
-        }
-
         $(function () {
             $("#btn-create-account").click(function () {
                 $("#modal-sign-up").fadeIn().css("display", "flex");
@@ -164,12 +135,22 @@ setcookie('visit_count', isset($_COOKIE['visit_count']) ? $_COOKIE['visit_count'
             })
         })
 
-        // localStorage
-        const hari = "<?php echo $tanggal ?>";
-        const jam = "<?php echo $jam ?>";
+        $(function () {
+            $("#btn-sign-in").click(function () {
+                $("#modal-sign-in").fadeIn().css("display", "flex");
+            })
 
-        localStorage.setItem("hari", hari);
-        localStorage.setItem("jam", jam);
+            $("#close-in").click(function () {
+                $("#modal-sign-in").fadeOut();
+            })
+        })
+
+        // localStorage
+        // const hari = "<?php echo $tanggal ?>";
+        // const jam = "<?php echo $jam ?>";
+
+        // localStorage.setItem("hari", hari);
+        // localStorage.setItem("jam", jam);
     </script>
 </body>
 

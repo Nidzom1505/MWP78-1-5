@@ -112,6 +112,7 @@ p {
   justify-content: center;
 }
 
+/* modal sign up */
 #modal-sign-up {
   position: fixed;
   top: 0;
@@ -156,22 +157,66 @@ p {
   border-radius: 5px;
   gap: 10px;
 }
-
 .dob-input {
   display: flex;
   gap: 10px;
 }
+.btn-input {
+  width: auto;
+  height: 40px;
+  margin-top: 200px;
+  border-radius: 100px;
+  border: 1px solid white;
+  background-color: white;
+}
 
-.dob-input select {
-  width: 100px;
+
+/* modal Sign in */
+#modal-sign-in {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.439);
+  display: none;
+  justify-content: center;
+  align-items: center;
+}
+#modal-sign-in img {
+  width: 30px;
+  height: 30px;
+}
+.modal-in {
+  background-color: black;
+  width: 500px;
+  height: 600px;
+}
+.modal-top-in {
+  display: flex;
+  gap: 200px;
+  margin-top: 5px;
+}
+.modal-form-in {
+  color: white;
+  width: 400px;
+  margin-left: 50px;
+}
+.modal-form-input-in form {
+  /* width: 60%; */
+  display: flex;
+  flex-direction: column;
+}
+.form-control-in {
+  width: 75%;
+  height: 20px;
   padding: 8px;
+  margin-bottom: 10px;
   border: 1px solid #ccc;
   border-radius: 5px;
-  background-color: white;
-  font-size: 14px;
-  cursor: pointer;
+  gap: 10px;
 }
-.btn-input {
+.btn-input-in {
   width: auto;
   height: 40px;
   margin-top: 200px;

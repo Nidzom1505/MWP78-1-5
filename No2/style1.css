@@ -1,0 +1,834 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #ffffff;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.container {
+  display: flex;
+}
+
+.con-kiri {
+  width: 360px;
+  height: 100vp;
+  background-color: white;
+  border-right: 1px solid gray;
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+}
+
+.kiri-jarak {
+  padding-left: 120px;
+  padding-top: -20px;
+}
+
+#logo {
+  width: 33px;
+  height: 33px;
+}
+
+.home {
+  margin-top: 20px;
+  margin-bottom: 10px;
+  width: 50px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+}
+
+.search,
+.notif,
+.pesan,
+.grok,
+.com,
+.prem,
+.or,
+.pro {
+  margin-top: 20px;
+  margin-bottom: 10px;
+  width: 50px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+}
+
+.lain {
+  margin-top: 20px;
+  width: 50px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+}
+
+#home,
+#search,
+#notif,
+#pesan,
+#grok,
+#com,
+#prem,
+#or,
+#pro,
+#lain {
+  width: 28px;
+  height: 28px;
+}
+
+#ber {
+  margin-left: 20px;
+  font-weight: normal;
+  font-size: 20px;
+}
+
+.postingBtn {
+  width: 225px;
+  height: 50px;
+  border-radius: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: black;
+}
+
+#pos {
+  font-size: 20px;
+  color: white;
+}
+
+.profile-kiri {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 8px;
+  width: 230px;
+  border-radius: 10px;
+  cursor: pointer;
+  margin-top: -18px;
+}
+
+#photo {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-left: -4px;
+}
+
+.profile-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  line-height: 1;
+}
+
+#user {
+  font-style: normal;
+  color: gray;
+}
+
+.profile-text h4 {
+  margin: 2px 0;
+  font-size: 14px;
+  color: rgb(0, 0, 0);
+}
+
+.elipsis {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  margin-left: 30px;
+}
+
+.con-tengah {
+  width: 635px;
+  min-height: 100vp;
+  background-color: white;
+  position: relative;
+  margin-left: 401px;
+  border-right: 1px solid gray;
+}
+
+#kembali {
+  width: 24px;
+  height: 24px;
+  margin-left: 20px;
+  margin-right: 10px;
+}
+
+.tabKembali {
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  width: 596.5px;
+  height: 45px;
+  display: flex;
+  align-items: center;
+  padding: 5px 0;
+  position: fixed;
+  z-index: 3;
+}
+
+.pas {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  line-height: 1.5;
+  margin-left: 15px;
+}
+
+#namaKem {
+  font-size: 20px;
+  margin-top: 0px;
+}
+
+#iyo {
+  font-size: 12px;
+  color: grey;
+}
+
+#backgroundProf {
+  width: 596.5px;
+  height: 199px;
+  margin-top: 55px;
+}
+
+#profile1 {
+  width: 135px;
+  height: 135px;
+  border-radius: 50%;
+  border: 4px solid white;
+  position: relative;
+  top: -80px;
+  left: 15px;
+  z-index: 1;
+}
+
+.profilAtur {
+  display: flex;
+}
+
+#aturBtn {
+  width: 90px;
+  height: 30px;
+  margin-left: 333px;
+  margin-top: 10px;
+  border-radius: 50px;
+  font-size: 16px;
+  font-style: bold;
+  border: 1px solid gainsboro;
+  background-color: transparent;
+}
+
+.bio {
+  margin-top: -65px;
+  margin-left: 14px;
+}
+
+#namaBio {
+  font-size: 20px;
+}
+
+#veri {
+  width: 15px;
+  height: 15px;
+}
+
+.namaVeri {
+  display: flex;
+}
+
+.verified {
+  border-radius: 30px;
+  border: 1px solid rgb(187, 187, 187);
+  margin-left: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 190px;
+}
+
+#userBio {
+  color: gray;
+  margin-top: 3px;
+  font-style: normal;
+}
+
+#location {
+  width: 20px;
+  height: 20px;
+}
+
+.lokasi,
+.calender {
+  display: flex;
+  margin-top: 15px;
+  gap: 5px;
+}
+
+.infoBio {
+  display: flex;
+  gap: 15px;
+}
+
+.following,
+.followers {
+  display: flex;
+  gap: 5px;
+}
+
+.follow-ing {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+#sum {
+  font-size: 15px;
+}
+
+.contentColumn {
+  display: flex;
+  margin-bottom: 20px;
+  justify-content: center;
+  margin-top: 30px;
+  gap: 45px;
+}
+
+.konten {
+  width: 600px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.sorotan {
+  width: 400px;
+  height: 500px;
+}
+
+#text-konten {
+  margin-top: 10px;
+  color: gray;
+}
+
+#tulisanBTN {
+  margin-top: 15px;
+  width: 270px;
+  height: 50px;
+  border-radius: 50px;
+  background-color: black;
+  color: white;
+  font-size: 16px;
+}
+
+.con-kanan {
+  width: 550px;
+  min-height: 100vh;
+  background-color: white;
+}
+
+#cari {
+  width: 25px;
+  height: 25px;
+}
+
+.searchBar {
+  width: 345px;
+  height: 45px;
+  display: flex;
+  align-items: center;
+  padding-left: 20px;
+  margin-left: 50px;
+  border: 1px solid black;
+  border-radius: 30px;
+  margin-top: 5px;
+  position: fixed;
+  background-color: white;
+}
+
+.inputCari {
+  border: none;
+  outline: none;
+  font-size: 16px;
+  margin-left: 10px;
+  background-color: transparent;
+  width: 100%;
+}
+
+#rekomen {
+  margin-top: 70px;
+}
+
+#anda {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.hangat-item,
+.profilee-text1,
+.profilee-text2 {
+  display: flex;
+  align-items: center;
+  padding: 8px;
+  border-radius: 10px;
+  cursor: pointer;
+  gap: 10px;
+}
+
+.profilee-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+}
+
+.profileee img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+
+.profileee-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+#nama {
+  font-weight: bold;
+  margin: 0;
+}
+
+#user {
+  color: gray;
+  font-size: 14px;
+  margin: 0;
+}
+
+.ikuti {
+  width: 60px;
+  height: 30px;
+  cursor: pointer;
+  border: none;
+  border-radius: 6px;
+  color: white;
+  background-color: black;
+  font-size: 14px;
+  font-weight: bold;
+  margin-left: auto;
+}
+
+.kanan-hangat,
+.kanan-suka {
+  width: 370px;
+  border: 1px solid black;
+  border-radius: 20px;
+  padding: 15px;
+  margin-left: 50px;
+  margin-top: 15px;
+}
+
+.trend-item {
+  width: 350px;
+  padding: 10px 15px;
+  background-color: white;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  position: relative;
+}
+
+.trend-category {
+  font-size: 13px;
+  color: gray;
+}
+
+.trend-name {
+  font-size: 16px;
+  font-weight: bold;
+  margin: 0;
+}
+
+.trend-count {
+  font-size: 13px;
+  color: gray;
+}
+
+.more-options {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  font-size: 18px;
+  cursor: pointer;
+  color: gray;
+}
+
+.kanan-akhir {
+  font-size: 13px;
+  color: gray;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  justify-content: center;
+  align-items: center;
+  max-width: 370px;
+  text-align: center;
+  margin-left: 50px;
+}
+
+.kanan-akhir a {
+  text-decoration: none;
+  color: gray;
+}
+
+.akhir a:hover {
+  text-decoration: underline;
+}
+
+.grok-btn {
+  position: fixed;
+  bottom: 60px;
+  right: 20px;
+  width: 60px;
+  height: 60px;
+  background-color: white;
+  border-radius: 15px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.grok-btn img {
+  width: 30px;
+  height: 30px;
+}
+
+.pesan-bar {
+  position: fixed;
+  bottom: 0;
+  right: 20px;
+  width: 350px;
+  background-color: white;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 15px 20px;
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
+  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.pesan-title {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.pesan-icons {
+  display: flex;
+  gap: 15px;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+#suka-banyak,
+#hangat-banyak {
+  color: rgb(29 155 240);
+}
+
+#lebih:hover {
+  background: rgb(205, 204, 204);
+}
+
+.kanan-search {
+  width: 510px;
+  height: 55px;
+  background-color: white;
+  position: fixed;
+  z-index: 1;
+}
+
+/* modal post */
+#modal-post {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(50, 50, 50, 0.439);
+  display: none;
+  justify-content: center;
+  align-items: start;
+  z-index: 5;
+}
+.post {
+  background-color: white;
+  width: 650px;
+  height: 300px;
+  margin-top: 30px;
+  border-radius: 20px;
+}
+.post-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+}
+.close {
+  width: 25px;
+  height: 25px;
+  margin-top: 20px;
+  margin-left: 15px;
+}
+.post-top h6 {
+  font-size: 15px;
+  margin-left: 10px;
+  margin-right: 25px;
+  color: rgb(0, 213, 255);
+}
+.post-form {
+  display: flex;
+  align-items: start;
+  padding: 10px;
+}
+.post-form img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 4px solid white;
+}
+textarea {
+  width: 550px;
+  height: 170px;
+  padding: 20px 15px;
+  font-size: 20px;
+  border: none;
+  outline: none;
+  resize: none;
+  box-sizing: border-box;
+}
+textarea::placeholder {
+  color: #888;
+}
+.post-bottom{
+  display: flex;
+  justify-content: end;
+}
+.post-bottom button{
+  width: 100px;
+  height: 40px;
+  border-radius: 50px;
+  margin-right: 20px;
+  margin-bottom: 10px;
+  border: 1px solid transparent;
+  color: white;
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+
+/* postingan */
+.postingan {
+  width: 560px;
+  background-color: #fff;
+  padding: 10px;
+  display: flex;
+  gap: 10px;
+  margin: 0 auto;
+}
+
+.post-kiri img {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 2px solid #000;
+}
+
+.post-kanan {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.post-kanan h3 {
+  margin: 0;
+  font-size: 16px;
+  color: #000;
+}
+
+.post-kanan p {
+  margin: 5px 0;
+  font-size: 14px;
+  color: #333;
+}
+
+.post-kanan small {
+  font-size: 12px;
+  color: gray;
+}
+
+/* postingan reply */
+.balasan {
+  margin-top: 6px;
+  margin-left: 12px;
+  padding: 6px 10px;
+  background-color: #f0f0f0;
+  border-radius: 10px;
+  font-size: 14px;
+}
+.postingan-reply-jumlah p {
+  margin: 0;
+}
+
+
+/* reply */
+.postingan-reply{
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  width: 100%;
+}
+.postingan-reply img{
+  width: 10px;
+  height: 10px;
+}
+.postingan-reply-jumlah{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+}
+/* modal reply */
+#modal-reply {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(50, 50, 50, 0.439);
+  display: none;
+  justify-content: center;
+  align-items: start;
+  z-index: 5;
+}
+.reply {
+  background-color: white;
+  width: 650px;
+  height: 380px;
+  margin-top: 30px;
+  border-radius: 20px;
+}
+.reply-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+}
+.reply-top h6 {
+  font-size: 15px;
+  margin-left: 10px;
+  margin-right: 25px;
+  color: rgb(0, 213, 255);
+}
+.reply-form {
+  display: flex;
+  align-items: start;
+  padding: 10px;
+}
+.reply-form img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 4px solid white;
+}
+textarea {
+  width: 550px;
+  height: 170px;
+  padding: 20px 15px;
+  font-size: 20px;
+  border: none;
+  outline: none;
+  resize: none;
+  box-sizing: border-box;
+}
+.reply-bottom{
+  display: flex;
+  justify-content: end;
+}
+.reply-bottom button{
+  width: 100px;
+  height: 40px;
+  border-radius: 50px;
+  margin-right: 20px;
+  margin-bottom: 10px;
+  border: 1px solid transparent;
+  color: white;
+  background-color: rgba(0, 0, 0, 0.2);
+} 
+.reply-preview {
+  display: flex;
+  align-items: flex-start;
+  padding: 10px 15px;
+  border-bottom: 1px solid #ccc;
+}
+.reply-preview img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+.reply-preview-content {
+  max-width: 550px;
+}
+.reply-preview-content h4 {
+  font-size: 15px;
+  margin: 0;
+  color: black;
+}
+.reply-preview-content p {
+  margin: 5px 0 0;
+  font-size: 14px;
+  color: #555;
+}
+
+
+
+/* notif */
+.toast {
+  visibility: hidden;
+  min-width: 250px;
+  background-color: #0095ff;
+  color: white;
+  text-align: center;
+  border-radius: 8px;
+  padding: 12px 16px;
+  position: fixed;
+  z-index: 9999;
+  top: 20px;
+  right: 20px;
+  font-size: 14px;
+  opacity: 0;
+  transition: opacity 0.5s ease, top 0.5s ease;
+}
+
+.toast.show {
+  visibility: visible;
+  opacity: 1;
+  top: 40px;
+}
