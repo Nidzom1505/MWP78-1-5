@@ -146,8 +146,8 @@ setcookie('visit_count', isset($_COOKIE['visit_count']) ? $_COOKIE['visit_count'
         })
 
         // localStorage
-        // const hari = "<?php echo $tanggal ?>";
-        // const jam = "<?php echo $jam ?>";
+        // const hari = "<--?php echo $tanggal ?>";
+        // const jam = "<--?php echo $jam ?>";
 
         // localStorage.setItem("hari", hari);
         // localStorage.setItem("jam", jam);

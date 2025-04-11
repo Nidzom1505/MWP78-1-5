@@ -6,7 +6,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $password = $_POST['password'];
 
     if (!empty($username) && !empty($password)) {
-        // Pakai kutip ganda untuk escape keyword "user"
         $cek = pg_query_params($conn, 'SELECT * FROM "user" WHERE username = $1', array($username));
 
         if ($cek && pg_num_rows($cek) > 0) {

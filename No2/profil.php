@@ -159,7 +159,6 @@
                     $isi = nl2br(htmlspecialchars($post['isi']));
                     $tanggal = $post['tanggal_post'];
 
-                    // Ambil reply yang benar (id_postingan, bukan id)
                     $replies = pg_query_params($conn, "SELECT * FROM reply WHERE id_postingan = $1 ORDER BY tanggal_reply ASC", array($id_post));
                     $jumlah_reply = pg_num_rows($replies);
 
@@ -171,7 +170,6 @@
                     echo "      <h3>$username</h3>";
                     echo "      <p>$isi</p>";
 
-                    // Tombol reply + jumlah
                     echo '      <div class="postingan-reply">';
                     echo '          <div class="postingan-reply-jumlah">';
                     echo '              <img src="aset/comment-1-svgrepo-com.svg" class="btn-reply" 
@@ -183,7 +181,6 @@
                     echo "          <small>$tanggal</small>";
                     echo '      </div>';
 
-                    // Menampilkan balasan yang benar
                     if ($jumlah_reply > 0) {
                         while ($rep = pg_fetch_assoc($replies)) {
                             echo '<div class="balasan">';
@@ -193,8 +190,8 @@
                         }
                     }
 
-                    echo '  </div>'; // .post-kanan
-                    echo '</div>';   // .postingan
+                    echo '  </div>';
+                    echo '</div>';
                 }
                 ?>
             </div>
@@ -416,25 +413,20 @@
             const replyTextarea = modalReply.querySelector("textarea");
             const replyPreview = modalReply.querySelector(".reply-preview");
 
-            // Delegasi klik ke semua .btn-reply di dalam .konten
             document.querySelector(".konten").addEventListener("click", function (e) {
                 if (e.target.classList.contains("btn-reply")) {
                     const username = e.target.getAttribute("data-username");
                     const isi = e.target.getAttribute("data-isi");
                     const id = e.target.getAttribute("data-id");
 
-                    // Simpan id postingan di atribut data modal
                     modalReply.setAttribute("data-id", id);
 
-                    // Tampilkan preview di modal
                     replyPreview.innerHTML = `<div class="preview">
                 <strong>${username}</strong>: ${isi}
             </div>`;
 
-                    // Kosongkan textarea setiap kali modal dibuka
                     replyTextarea.value = "";
 
-                    // Tampilkan modal
                     modalReply.style.display = "flex";
                 }
             });
