@@ -1,4 +1,5 @@
 <?php
+session_start();
 include 'koneksi.php';
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
@@ -14,7 +15,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $query = pg_query_params($conn, 'INSERT INTO "user" (username, password) VALUES ($1, $2)', array($username, $password));
 
             if ($query) {
-                header("Location: profil.php");
+                $_SESSION['username'] = $username;
+                echo "<script>
+                    localStorage.setItem('last_username', '$username');
+                    window.location.href = 'dashboard.php';
+                </script>";
                 exit();
             } else {
                 echo "Gagal menyimpan data.";

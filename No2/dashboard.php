@@ -37,12 +37,10 @@ if (isset($_SESSION['username'])) {
             <div class="kiri-jarak">
                 <img src="aset/Xtrans.svg" alt="X" id="logo">
 
-                <a href="dashboard.php" class="home-link">
-                    <div class="home">
-                        <img src="aset/icons8-home.svg" alt="home" id="home">
-                        <h6 id="ber">Beranda</h6>
-                    </div>
-                </a>
+                <div class="home">
+                    <img src="aset/icons8-home.svg" alt="home" id="home">
+                    <h6 id="ber">Beranda</h6>
+                </div>
 
                 <div class="search">
                     <img src="aset/icons8-search (1).svg" alt="search" id="search">
@@ -79,10 +77,12 @@ if (isset($_SESSION['username'])) {
                     <h6 id="ber">Organisasi Terverifikasi</h6>
                 </div>
 
-                <div class="pro">
-                    <img src="aset/profile-svgrepo-com.svg" alt="profile" id="pro">
-                    <h6 id="ber">Profil</h6>
-                </div>
+                <a href="profil.php" class="home-link">
+                    <div class="pro">
+                        <img src="aset/profile-svgrepo-com.svg" alt="profile" id="pro">
+                        <h6 id="ber">Profil</h6>
+                    </div>
+                </a>
 
                 <div class="lain">
                     <img src="aset/more-options-ellipsis-icon.svg" alt="other" id="lain">
@@ -107,77 +107,11 @@ if (isset($_SESSION['username'])) {
         </div>
 
         <div class="con-tengah">
-            <div class="tabKembali">
-                <img src="aset/back-svgrepo-com.svg" alt="Back" id="kembali">
-                <div class="pas">
-                    <h2 id="namaKem"><?php echo $_SESSION['username']; ?></h2>
-                    <p id="iyo"><?php echo $jumlahPostingan; ?> Postingan</p>
-                </div>
-            </div>
-
-            <div>
-                <img src="aset/background.jpg" alt="gambar" id="backgroundProf">
-                <div class="profilAtur">
-                    <img src="aset/default_profile_400x400.png" alt="profile" id="profile1">
-                    <button id="aturBtn">Atur profil</button>
-                </div>
-            </div>
-
-            <div class="bio">
-                <div class="namaVeri">
-                    <h2 id="namaBio"><?php echo $_SESSION['username']; ?></h2>
-                    <div class="verified">
-                        <img src="aset/verified-svgrepo-com (2).svg" alt="ok" id="veri">
-                        <h4>Dapatkan verifikasi</h4>
-                    </div>
-                </div>
-
-                <h5 id="userBio">@<?php echo $_SESSION['username']; ?></h5>
-
-                <div class="infoBio">
-                    <div class="lokasi">
-                        <img src="aset/location-pin-alt-1-svgrepo-com.svg" alt="loc" id="location">
-                        <p>Jawa Timur, Indonesia</p>
-                    </div>
-
-                    <div class="calender">
-                        <img src="aset/calender.svg" alt="cal" id="location">
-                        <p>Bergabung, April 2023</p>
-                    </div>
-                </div>
-
-                <div class="follow-ing">
-                    <div class="following">
-                        <h6 id="sum">1,5k</h6>
-                        <p>Mengikuti</p>
-                    </div>
-
-                    <div class="followers">
-                        <h6 id="sum">6k</h6>
-                        <p>Pengikut</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="contentColumn">
-                <h4 class="posts">Postingan</h4>
-                <h4 class="replies">Balasan</h4>
-                <h4 class="highlight">Sorotan</h4>
-                <h4 class="articles">Artikel</h4>
-                <h4 class="media">Media</h4>
-                <h4 class="likes">Suka</h4>
-            </div>
-
-            <hr><br>
-
             <div class="konten">
                 <?php
-                session_start();
                 include 'koneksi.php';
 
-                $username_session = $_SESSION['username'];
-
-                $query = pg_query_params($conn, "SELECT * FROM postingan WHERE username = $1 ORDER BY tanggal_post DESC", array($username_session));
+                $query = pg_query($conn, "SELECT * FROM postingan ORDER BY tanggal_post DESC");
 
                 while ($post = pg_fetch_assoc($query)) {
                     $id_post = $post['id'];
@@ -199,9 +133,9 @@ if (isset($_SESSION['username'])) {
                     echo '      <div class="postingan-reply">';
                     echo '          <div class="postingan-reply-jumlah">';
                     echo '              <img src="aset/comment-1-svgrepo-com.svg" class="btn-reply" 
-                        data-id="' . $id_post . '" 
-                        data-username="' . $username . '" 
-                        data-isi="' . htmlspecialchars($post['isi']) . '">';
+            data-id="' . $id_post . '" 
+            data-username="' . $username . '" 
+            data-isi="' . htmlspecialchars($post['isi']) . '">';
                     echo $jumlah_reply > 0 ? '<p>' . $jumlah_reply . '</p>' : '<p></p>';
                     echo '          </div>';
                     echo "          <small>$tanggal</small>";
@@ -451,13 +385,8 @@ if (isset($_SESSION['username'])) {
                     const id = e.target.getAttribute("data-id");
 
                     modalReply.setAttribute("data-id", id);
-
-                    replyPreview.innerHTML = `<div class="preview">
-                <strong>${username}</strong>: ${isi}
-            </div>`;
-
+                    replyPreview.innerHTML = `<div class="preview"><strong>${username}</strong>: ${isi}</div>`;
                     replyTextarea.value = "";
-
                     modalReply.style.display = "flex";
                 }
             });
@@ -468,7 +397,6 @@ if (isset($_SESSION['username'])) {
                 replyPreview.innerHTML = "";
             });
 
-            // Tombol posting
             modalReply.querySelector("button").addEventListener("click", function () {
                 const isi = replyTextarea.value.trim();
                 const id = modalReply.getAttribute("data-id");

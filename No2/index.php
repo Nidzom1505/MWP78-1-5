@@ -1,13 +1,15 @@
 <?php
-date_default_timezone_set('Asia/Jakarta');
-$tanggal = date('d-m-Y');
-$jam = date('H:i:s');
+session_start();
 
-setcookie('waktu[hari]', $tanggal, time() + 3600);
-setcookie('waktu[jam]', $jam, time() + 3600);
-setcookie('visit_count', isset($_COOKIE['visit_count']) ? $_COOKIE['visit_count'] + 1 : 1, time() + 3600, "/");
+if (isset($_COOKIE['remember_me']) && !isset($_SESSION['username'])) {
+    $_SESSION['username'] = $_COOKIE['remember_me'];
+}
+
+if (isset($_SESSION['username'])) {
+    header("Location: profil.php");
+    exit();
+}
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -116,6 +118,11 @@ setcookie('visit_count', isset($_COOKIE['visit_count']) ? $_COOKIE['visit_count'
                         <form method="post" action="login.php">
                             <input type="text" class="form-control-in" name="username" placeholder="Username">
                             <input type="password" class="form-control-in" name="password" placeholder="Password"><br>
+
+                            <label>
+                                <input type="checkbox" name="remember"> Ingat saya
+                            </label><br>
+
                             <button class="btn-input-in" id="next-in" type="submit">Login</button>
                         </form>
                     </div>
@@ -125,6 +132,13 @@ setcookie('visit_count', isset($_COOKIE['visit_count']) ? $_COOKIE['visit_count'
     </div>
 
     <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const savedUsername = localStorage.getItem("last_username");
+            if (savedUsername) {
+                document.querySelector("input[name='username']").value = savedUsername;
+            }
+        });
+
         $(function () {
             $("#btn-create-account").click(function () {
                 $("#modal-sign-up").fadeIn().css("display", "flex");
@@ -144,13 +158,6 @@ setcookie('visit_count', isset($_COOKIE['visit_count']) ? $_COOKIE['visit_count'
                 $("#modal-sign-in").fadeOut();
             })
         })
-
-        // localStorage
-        // const hari = "<--?php echo $tanggal ?>";
-        // const jam = "<--?php echo $jam ?>";
-
-        // localStorage.setItem("hari", hari);
-        // localStorage.setItem("jam", jam);
     </script>
 </body>
 
