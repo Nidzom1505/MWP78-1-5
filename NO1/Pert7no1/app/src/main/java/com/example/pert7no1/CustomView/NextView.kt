@@ -17,12 +17,20 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
+import com.example.pert7no1.DB.KoneksiDB
 import com.example.pert7no1.R
+import com.example.pert7no1.dashboardActivity
+import com.example.pert7no1.login_activity
 import com.example.pert7no1.nextActivity
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class NextView (context: Context, attrs: AttributeSet?) : LinearLayout(context, attrs) {
     private val iconX = ImageView(context).apply {
-        setImageResource(R.drawable.icon_x)
+        setImageResource(R.drawable.ic_x)
         layoutParams = LinearLayout.LayoutParams(100, 100).apply {
             gravity = Gravity.CENTER_HORIZONTAL
         }
@@ -34,6 +42,11 @@ class NextView (context: Context, attrs: AttributeSet?) : LinearLayout(context, 
         textSize = 23f
         setPadding(30, 80, 30, 0)
         setTextColor(resources.getColor(R.color.white, null))
+    }
+    fun setUsername(username: String) {
+        usernameField.setText(username)
+        usernameField.isEnabled = false
+        usernameField.isFocusable = false
     }
     private val usernameField = EditText(context).apply {
         hint = "Nomor telepon, email, atau nama pengguna"
@@ -94,9 +107,23 @@ class NextView (context: Context, attrs: AttributeSet?) : LinearLayout(context, 
             weight = 0f
         }
         setOnClickListener {
-//            val intent = Intent(context, nextActivity::class.java)
-//            context.startActivity(intent)
-            showPopupDialog() //pop up
+            val user = usernameField.text.toString().trim()
+            val pw = passwordField.text.toString().trim()
+
+            if (pw.isEmpty()) {
+                Toast.makeText(context, "Password tidak boleh kosong", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            checkUsername(user, pw) { isValid ->
+                if (isValid) {
+//                    showPopupDialog() //pop up
+                    val intent = Intent(context, dashboardActivity::class.java)
+                    context.startActivity(intent)
+                } else {
+                    showPopupDialogFail() //pop up gagal
+                }
+            }
         }
     }
     //pop up notif
@@ -112,8 +139,6 @@ class NextView (context: Context, attrs: AttributeSet?) : LinearLayout(context, 
         mDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         mDialog.show()
     }
-
-
 
     init{
         orientation = VERTICAL
@@ -159,6 +184,41 @@ class NextView (context: Context, attrs: AttributeSet?) : LinearLayout(context, 
             setColor(Color.BLACK)
             setStroke(2, Color.WHITE)
             cornerRadius = 100f
+        }
+    }
+
+    //method select
+    fun checkUsername(username: String, password: String, onResult: (Boolean) -> Unit) {
+        GlobalScope.launch(Dispatchers.IO) {
+            try {
+                val connection = KoneksiDB.connection()
+                if (connection != null) {
+                    val statement = connection.prepareStatement("""SELECT * FROM "user" WHERE username = ? AND password = ?""")
+                    statement.setString(1, username)
+                    statement.setString(2, password)
+
+                    val resultSet = statement.executeQuery()
+
+                    val exists = resultSet.next()
+
+                    withContext(Dispatchers.Main) {
+                        onResult(exists)
+                    }
+
+                    resultSet.close()
+                    statement.close()
+                    connection.close()
+                } else {
+                    withContext(Dispatchers.Main) {
+                        onResult(false)
+                    }
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                withContext(Dispatchers.Main) {
+                    onResult(false)
+                }
+            }
         }
     }
 }

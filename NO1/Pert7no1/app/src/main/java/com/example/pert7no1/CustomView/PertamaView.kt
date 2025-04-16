@@ -20,13 +20,13 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.content.ContextCompat
-import com.example.pert7no1.PertamaActivity
 import com.example.pert7no1.R
 import com.example.pert7no1.login_activity
+import com.example.pert7no1.regisActivity
 
 class PertamaView (context: Context, attrs: AttributeSet?) : LinearLayout(context, attrs){
     private val iconX = ImageView(context).apply {
-        setImageResource(R.drawable.icon_x)
+        setImageResource(R.drawable.ic_x)
         layoutParams = LayoutParams(100, 100).apply {
             setMargins(0, 0,0, 0)
             orientation = VERTICAL
@@ -74,6 +74,11 @@ class PertamaView (context: Context, attrs: AttributeSet?) : LinearLayout(contex
         gravity = Gravity.CENTER
         setPadding(20, 10, 20, 10)
         background = createRoundedBackground()
+
+        setOnClickListener{
+            val intent = Intent(context, regisActivity::class.java)
+            context.startActivity(intent)
+        }
     }
     private val textPanjang = TextView(context).apply {
         textSize = 14f
@@ -117,8 +122,6 @@ class PertamaView (context: Context, attrs: AttributeSet?) : LinearLayout(contex
         spannable.setSpan(clickableSpan, fullText.indexOf("Masuk"), fullText.indexOf("Masuk") + "Masuk".length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
         text = spannable
     }
-
-
 
     init {
         setBackgroundColor(resources.getColor(R.color.black, null))

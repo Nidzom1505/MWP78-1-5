@@ -1,10 +1,12 @@
 package com.example.pert7no1.CustomView
 
+import android.app.Dialog
 import android.content.Context
-import android.content.Intent
 import android.graphics.Color
 import android.graphics.Typeface
+import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.GradientDrawable
+import android.text.InputType
 import android.text.TextUtils
 import android.util.AttributeSet
 import android.view.Gravity
@@ -15,15 +17,14 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
-import com.example.pert7no1.R
-import com.example.pert7no1.nextActivity
 import com.example.pert7no1.DB.KoneksiDB
+import com.example.pert7no1.R
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class LoginView (context: Context, attrs: AttributeSet?) : LinearLayout(context, attrs) {
+class RegisView (context: Context, attrs: AttributeSet?) : LinearLayout(context, attrs){
     private val iconX = ImageView(context).apply {
         setImageResource(R.drawable.ic_x)
         layoutParams = LinearLayout.LayoutParams(100, 100).apply {
@@ -31,15 +32,20 @@ class LoginView (context: Context, attrs: AttributeSet?) : LinearLayout(context,
         }
     }
     private val textUtama = TextView(context).apply {
-        text = "Untuk memulai, masukkan nomor ponsel, email, atau @namapengguna Anda"
+        text = "Buat akun anda"
         gravity = Gravity.START
         setTypeface(null, Typeface.BOLD)
         textSize = 23f
         setPadding(30, 80, 30, 0)
         setTextColor(resources.getColor(R.color.white, null))
     }
+    fun setUsername(username: String) {
+        usernameField.setText(username)
+        usernameField.isEnabled = false
+        usernameField.isFocusable = false
+    }
     private val usernameField = EditText(context).apply {
-        hint = "Nomor telepon, email, atau nama pengguna"
+        hint = "Username"
         setHintTextColor(Color.LTGRAY)
         setTextColor(Color.WHITE)
         setHighlightColor(Color.WHITE)
@@ -47,6 +53,16 @@ class LoginView (context: Context, attrs: AttributeSet?) : LinearLayout(context,
         background = createRoundedBackground()
         setSingleLine(true)
         ellipsize = TextUtils.TruncateAt.END
+    }
+
+    private val passwordField = EditText(context).apply {
+        hint = "Password"
+        inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
+        setHintTextColor(Color.LTGRAY)
+        setTextColor(Color.WHITE)
+        setHighlightColor(Color.WHITE)
+        setPadding(40, 40, 40, 40)
+        background = createRoundedBackground()
     }
     private val bottomContainer = LinearLayout(context).apply {
         orientation = VERTICAL
@@ -59,22 +75,11 @@ class LoginView (context: Context, attrs: AttributeSet?) : LinearLayout(context,
             setMargins(50, 1100, 50, 50)
         }
     }
-    private val lupaButton = Button(context).apply {
-        text = "Lupa Kata Sandi?"
-        isAllCaps = false
-        gravity = Gravity.CENTER
-        setPadding(20, 10, 20, 10)
-        background = createRoundedBackgroundButtonLupa()
-        layoutParams = LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT).apply {
-            weight = 0f
-        }
-        setTextColor(Color.WHITE)
-    }
     private val spacer = View(context).apply {
         layoutParams = LayoutParams(0, LayoutParams.WRAP_CONTENT, 1f)
     }
     private val nextButton = Button(context).apply {
-        text = "Berikutnya"
+        text = "Buat"
         isAllCaps = false
         gravity = Gravity.CENTER
         setPadding(20, 10, 20, 10)
@@ -82,30 +87,44 @@ class LoginView (context: Context, attrs: AttributeSet?) : LinearLayout(context,
         layoutParams = LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT).apply {
             weight = 0f
         }
-        setOnClickListener {
-            val username = usernameField.text.toString().trim()
 
-            if (username.isEmpty()) {
-                Toast.makeText(context, "Username tidak boleh kosong", Toast.LENGTH_SHORT).show()
+        setOnClickListener {
+            val user = usernameField.text.toString().trim()
+            val pw = passwordField.text.toString().trim()
+
+            if (user.isEmpty()) {
+                showPopupDialog(false, "Username tidak boleh kosong")
                 return@setOnClickListener
             }
 
-            checkUsername(username) { isValid ->
-                if (isValid) {
-                    val sharedPref = context.getSharedPreferences("user_session", Context.MODE_PRIVATE)
-                    sharedPref.edit().putString("username", username).apply()
-                    val intent = Intent(context, nextActivity::class.java).apply {
-                        putExtra("username", username)
-                    }
-                    context.startActivity(intent)
+            if (pw.isEmpty()) {
+                showPopupDialog(false, "Password tidak boleh kosong")
+                return@setOnClickListener
+            }
+
+            isUsernameTaken(user) { isExists ->
+                if (isExists) {
+                    showPopupDialog(false, "Username sudah digunakan")
                 } else {
-                    Toast.makeText(context, "Username tidak ditemukan", Toast.LENGTH_SHORT).show()
+                    insertUser(user, pw) { isSuccess ->
+                        showPopupDialog(isSuccess, if (isSuccess) "Berhasil membuat akun" else "Gagal membuat akun")
+                    }
                 }
             }
         }
     }
 
-    init {
+    //pop up notif
+    fun showPopupDialog(success: Boolean, message: String) {
+        if (success) {
+            Toast.makeText(context, "✅ $message", Toast.LENGTH_SHORT).show()
+        } else {
+            Toast.makeText(context, "❌ $message", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+
+    init{
         orientation = VERTICAL
         setBackgroundColor(resources.getColor(R.color.black, null))
 
@@ -114,8 +133,10 @@ class LoginView (context: Context, attrs: AttributeSet?) : LinearLayout(context,
         addView(usernameField, createLayoutParams().apply {
             setPadding(50, 0, 50, 0)
         })
+        addView(passwordField, createLayoutParams().apply {
+            setPadding(50, 0, 50, 0)
+        })
 
-        buttonContainer.addView(lupaButton)
         buttonContainer.addView(spacer)
         buttonContainer.addView(nextButton)
         bottomContainer.addView(buttonContainer)
@@ -148,36 +169,69 @@ class LoginView (context: Context, attrs: AttributeSet?) : LinearLayout(context,
             cornerRadius = 100f
         }
     }
-}
 
-//method select
-fun checkUsername(username: String, onResult: (Boolean) -> Unit) {
-    GlobalScope.launch(Dispatchers.IO) {
-        try {
-            val connection = KoneksiDB.connection()
-            if (connection != null) {
-                val statement = connection.prepareStatement("""SELECT * FROM "user" WHERE username = ?""")
-                statement.setString(1, username)
-                val resultSet = statement.executeQuery()
+    fun isUsernameTaken(username: String, onResult: (Boolean) -> Unit) {
+        GlobalScope.launch(Dispatchers.IO) {
+            try {
+                val connection = KoneksiDB.connection()
+                if (connection != null) {
+                    val statement = connection.prepareStatement("""SELECT * FROM "user" WHERE username = ?""")
+                    statement.setString(1, username)
+                    val resultSet = statement.executeQuery()
 
-                val exists = resultSet.next()
+                    val exists = resultSet.next()
 
-                withContext(Dispatchers.Main) {
-                    onResult(exists)
+                    withContext(Dispatchers.Main) {
+                        onResult(exists)
+                    }
+
+                    resultSet.close()
+                    statement.close()
+                    connection.close()
+                } else {
+                    withContext(Dispatchers.Main) {
+                        onResult(false)
+                    }
                 }
-
-                resultSet.close()
-                statement.close()
-                connection.close()
-            } else {
+            } catch (e: Exception) {
+                e.printStackTrace()
                 withContext(Dispatchers.Main) {
                     onResult(false)
                 }
             }
-        } catch (e: Exception) {
-            e.printStackTrace()
-            withContext(Dispatchers.Main) {
-                onResult(false)
+        }
+    }
+
+    //method select
+    fun insertUser(username: String, password: String, onResult: (Boolean) -> Unit) {
+        GlobalScope.launch(Dispatchers.IO) {
+            try {
+                val connection = KoneksiDB.connection()
+                if (connection != null) {
+                    val statement = connection.prepareStatement(
+                        """INSERT INTO "user" (username, password) VALUES (?, ?)"""
+                    )
+                    statement.setString(1, username)
+                    statement.setString(2, password)
+
+                    val rowsInserted = statement.executeUpdate()
+
+                    withContext(Dispatchers.Main) {
+                        onResult(rowsInserted > 0)
+                    }
+
+                    statement.close()
+                    connection.close()
+                } else {
+                    withContext(Dispatchers.Main) {
+                        onResult(false)
+                    }
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                withContext(Dispatchers.Main) {
+                    onResult(false)
+                }
             }
         }
     }
