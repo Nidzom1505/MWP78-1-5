@@ -437,6 +437,47 @@ if (isset($_SESSION['username'])) {
             }
         });
 
+
+        document.addEventListener("DOMContentLoaded", function () {
+            if (!localStorage.getItem("postingan")) {
+                // Ambil data
+                fetch("dataDummy.json")
+                    .then(response => response.json())
+                    .then(data => {
+                        localStorage.setItem("postingan", JSON.stringify(data));
+                        renderPosts(data);
+                    })
+                    .catch(error => console.error("Gagal memuat data dummy:", error));
+            } else {
+                const postingan = JSON.parse(localStorage.getItem("postingan"));
+                renderPosts(postingan);
+            }
+
+            function renderPosts(postingan) {
+                const konten = document.querySelector(".konten");
+                postingan.forEach(post => {
+                    const postElement = document.createElement("div");
+                    postElement.classList.add("postingan");
+                    postElement.innerHTML = `
+                    <div class="post-kiri">
+                        <img src="aset/default_profile_400x400.png" alt="profile">
+                    </div>
+                    <div class="post-kanan">
+                        <h3>${post.username}</h3>
+                        <p>${post.isi}</p>
+                        <div class="postingan-reply">
+                            <div class="postingan-reply-jumlah">
+                                <img src="aset/comment-1-svgrepo-com.svg" class="btn-reply" data-id="${post.id}">
+                                <p>${post.replies.length}</p>
+                            </div>
+                            <small>${post.tanggal_post}</small>
+                        </div>
+                    </div>
+                `;
+                    konten.appendChild(postElement);
+                });
+            }
+        });
     </script>
 </body>
 
