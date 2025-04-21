@@ -19,6 +19,9 @@ import com.example.pert7no1.R
 import com.example.pert7no1.DB.KoneksiDB
 import com.example.pert7no1.PostActivity
 import com.example.pert7no1.ReplyActivity
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import java.io.InputStreamReader
 
 class DashboardView (context: Context, attrs: AttributeSet?) : LinearLayout(context, attrs) {
     private val container = LinearLayout(context).apply {
@@ -91,6 +94,13 @@ class DashboardView (context: Context, attrs: AttributeSet?) : LinearLayout(cont
         setBackgroundColor(resources.getColor(R.color.white, null))
     }
 
+    fun getPostinganDanReplyFromJson(context: Context): List<Postingan> {
+        val inputStream = context.assets.open("dataDummy.json")
+        val reader = InputStreamReader(inputStream)
+        val type = object : TypeToken<List<Postingan>>() {}.type
+        return Gson().fromJson(reader, type)
+    }
+
     init {
         orientation = VERTICAL
         setBackgroundColor(resources.getColor(R.color.black, null))
@@ -110,14 +120,13 @@ class DashboardView (context: Context, attrs: AttributeSet?) : LinearLayout(cont
 
         // ✨ Tombol post
         val postButton = ImageView(context).apply {
-            setImageResource(R.drawable.icon_tambah) // kamu bisa ganti icon-nya
+            setImageResource(R.drawable.icon_tambah)
             layoutParams = FrameLayout.LayoutParams(150, 150).apply {
                 gravity = Gravity.BOTTOM or Gravity.END
                 bottomMargin = 60
                 rightMargin = 40
             }
             setPadding(30, 30, 30, 30)
-            setBackgroundColor(Color.BLUE)
             background = GradientDrawable().apply {
                 shape = GradientDrawable.OVAL
                 setColor(Color.parseColor("#1DA1F2"))
@@ -143,7 +152,6 @@ class DashboardView (context: Context, attrs: AttributeSet?) : LinearLayout(cont
         tabContainer.addView(textMengikuti)
         addView(container, createLayoutParams())
         addView(tabContainer)
-
         addView(garis)
 
         scrollView.addView(contentLayout)
@@ -153,67 +161,71 @@ class DashboardView (context: Context, attrs: AttributeSet?) : LinearLayout(cont
 
         // Load postingan & reply
         Thread {
-            val data = getPostinganDanReply()
-            post {
-                for (post in data) {
-                    val postContainer = LinearLayout(context).apply {
-                        orientation = VERTICAL
-                        setPadding(30, 30, 30, 30)
-                        setBackgroundColor(Color.DKGRAY)
-                        layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT).apply {
-                            setMargins(30, 30, 30, 30)
-                        }
-                    }
-
-                    val usernameText = TextView(context).apply {
-                        text = "@${post.username}"
-                        setTextColor(Color.WHITE)
-                        setTypeface(null, Typeface.BOLD)
-                    }
-
-                    val isiText = TextView(context).apply {
-                        text = post.isi
-                        setTextColor(Color.WHITE)
-                        setPadding(0, 10, 0, 10)
-                    }
-
-                    val tanggalText = TextView(context).apply {
-                        text = post.tanggal
-                        setTextColor(Color.GRAY)
-                        textSize = 12f
-                    }
-
-                    val replyIcon = ImageView(context).apply {
-                        setImageResource(R.drawable.reply_icon)
-                        setPadding(0, 15, 0, 10)
-                        layoutParams = LayoutParams(60, 60).apply {
-                            gravity = Gravity.START
+            try {
+                val data = getPostinganDanReply()
+                (context as? android.app.Activity)?.runOnUiThread {
+                    for (post in data) {
+                        val postContainer = LinearLayout(context).apply {
+                            orientation = VERTICAL
+                            setPadding(30, 30, 30, 30)
+                            setBackgroundColor(Color.DKGRAY)
+                            layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT).apply {
+                                setMargins(30, 30, 30, 30)
+                            }
                         }
 
-                        setOnClickListener {
-                            val intent = Intent(context, ReplyActivity::class.java)
-                            intent.putExtra("id_postingan", post.id)
-                            context.startActivity(intent)
+                        val usernameText = TextView(context).apply {
+                            text = "@${post.username}"
+                            setTextColor(Color.WHITE)
+                            setTypeface(null, Typeface.BOLD)
                         }
-                    }
 
-                    postContainer.addView(usernameText)
-                    postContainer.addView(isiText)
-                    postContainer.addView(tanggalText)
-                    postContainer.addView(replyIcon)
-
-                    for (reply in post.replies) {
-                        val replyText = TextView(context).apply {
-                            text = "↳ ${reply.username}: ${reply.isi}"
-                            setTextColor(Color.LTGRAY)
-                            setPadding(40, 10, 10, 10)
-                            textSize = 14f
+                        val isiText = TextView(context).apply {
+                            text = post.isi
+                            setTextColor(Color.WHITE)
+                            setPadding(0, 10, 0, 10)
                         }
-                        postContainer.addView(replyText)
-                    }
 
-                    contentLayout.addView(postContainer)
+                        val tanggalText = TextView(context).apply {
+                            text = post.tanggal
+                            setTextColor(Color.GRAY)
+                            textSize = 12f
+                        }
+
+                        val replyIcon = ImageView(context).apply {
+                            setImageResource(R.drawable.reply_icon)
+                            setPadding(0, 15, 0, 10)
+                            layoutParams = LayoutParams(60, 60).apply {
+                                gravity = Gravity.START
+                            }
+
+                            setOnClickListener {
+                                val intent = Intent(context, ReplyActivity::class.java)
+                                intent.putExtra("id_postingan", post.id)
+                                context.startActivity(intent)
+                            }
+                        }
+
+                        postContainer.addView(usernameText)
+                        postContainer.addView(isiText)
+                        postContainer.addView(tanggalText)
+                        postContainer.addView(replyIcon)
+
+                        for (reply in post.replies) {
+                            val replyText = TextView(context).apply {
+                                text = "↳ ${reply.username}: ${reply.isi}"
+                                setTextColor(Color.LTGRAY)
+                                setPadding(40, 10, 10, 10)
+                                textSize = 14f
+                            }
+                            postContainer.addView(replyText)
+                        }
+
+                        contentLayout.addView(postContainer)
+                    }
                 }
+            } catch (e: Exception) {
+                e.printStackTrace()
             }
         }.start()
     }
